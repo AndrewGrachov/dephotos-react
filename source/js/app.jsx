@@ -6,7 +6,6 @@ var styleContent = require('../../build/css/app.css');
 module.exports = React.createClass({
 	displayName: 'App',
 	render: function() {
-		console.log('styleContent:', styleContent.toString());
 		return (
 			<div>
 				<style type="text/css">{styleContent.toString()}</style>

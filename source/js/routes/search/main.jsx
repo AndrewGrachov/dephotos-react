@@ -18,43 +18,63 @@ module.exports = React.createClass({
 		}
 	},
 	getDefaultProps: function () {
-		return {
-			data: {
-				searchQuery: 'Pretty+woman',
-				searchPage: {
-					result: __DATA__.searchPage ? __DATA__.searchPage.result : []
+		if (process.browser) {
+			__DATA__.searchPage = __DATA__.searchPage || { result: []};
+			return {
+				data: {
+					searchQuery: 'cats',
+					searchPage: {
+						result: __DATA__.searchPage.result
+					}
 				}
 			}
 		}
+		return {};
 	},
 	getInitialState: function () {
 		return {
-			loading: !this.hasData()
+			loading: !!this.props.data.searchPage.result.length,
+			items: this.props.data.searchPage.result,
+			searchProps: this.constructor.load().query
 		};
 	},
+	load: function (query, callback) {
+		this.setState({
+			loading: true
+		});
+		api.get(query, function (err, response) {
+			if (!err) {
+				this.setState({
+					loading: false,
+					items: response.result
+				});
+			}
+		}.bind(this));
+	},
 	componentDidMount: function () {
-		if (this.hashData()) {
-			var query = this.constructor.load();
-			api.get(query, function (err, result) {
-				if (!err) {
-
-				}
-			}.bind(this));
+		if (!this.hasData) {
+			var query = this.constructor.load().query;
+			this.load(query);
 		}
 	},
 	hasData: function () {
-		return this.props.data.searchPage.result.length;
+		return this.state.items.length;
+	},
+	search: function () {
+		var searchValue = this.refs.searchInput.value.replace(new RegExp(' ', 'g'), '+');
+		var query = JSON.parse(JSON.stringify(this.state.searchProps));
+		query.dp_search_query = searchValue;
+		this.load(query);
 	},
 	render: function () {
-		debugger;
-		var searchItems = this.props.data.searchPage.result.map(function (props) {
-			return <SearchItem {...props} />
+		var searchItems = this.state.items.map(function (props, index) {
+			return <SearchItem {...props} key={index} />
 		});
 		return (<div>
-			<style type="text/css">{styleContent}</style>
+			<style type="text/css">{styleContent.toString()}</style>
 			<div>
 				<input className="big-input" ref="searchInput"/>
-				<button className="search-button">Search</button>
+				<button className="search-button" onClick={this.search}>Search</button>
 			</div>
 			<div className="search-container">
 				{searchItems}

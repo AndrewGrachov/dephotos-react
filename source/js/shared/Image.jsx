@@ -15,7 +15,7 @@ module.exports = React.createClass({
 		};
 	},
 	componentDidMount: function() {
-		var src = this.refs.img.getDOMNode().src;
+		var src = this.refs.img.src;
 		var img = new Image();
 		img.onload = this.imageOnLoad;
 		img.src = src;

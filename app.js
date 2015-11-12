@@ -1,8 +1,12 @@
 require('node-jsx').install({extension: '.jsx', harmony: true});
 require('./extensions');
+const qs = require('querystring');
+const config = require('config');
 const Koa = require('koa');
+var route = require('koa-path')();
 const app = new Koa();
-const Jade = require('koa-jade')
+const Jade = require('koa-jade');
+const request = require('co-request');
 const jade = new Jade({
 	viewPath: './views'
 });
@@ -17,7 +21,33 @@ app.use(function *(next) {
 });
 app.use(jade.middleware)
 
+var locales = {
+	'en': require('./locales/en.js'),
+	'ru': require('./locales/ru.js')
+};
+
 // response
+
+app.use(route('/api', function* (next) {
+	this.query.dp_apikey = config.api_key;
+	this.set('Content-Type', 'application/json');
+	// do stuff
+	switch (this.request.method) {
+		case 'GET':
+			var url = config.api_url + '?' + qs.stringify(this.query);
+			this.body = (yield request.get(url)).body
+	}
+}));
+
+app.use(route('/locale/:lang', function* (next) {
+	this.set('Content-Type', 'application/json');
+	// do stuff
+	switch (this.request.method) {
+		case 'GET':
+			this.body = locales[this.params.lang];
+	}
+}));
+
 
 app.use(function *(){
 	var locale = 'en';
