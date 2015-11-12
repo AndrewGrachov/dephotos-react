@@ -8,6 +8,12 @@ const config = require('config');
 const parallel = require('co-parallel');
 const qs = require('querystring');
 const co = require('co');
+const counterpart = require('counterpart');
+
+var locales = {
+	en: require('../../locales/en'),
+	ru: require('../../locales/ru')
+};
 
 function *requestApi(url) {
 	console.log('GET %s', url);
@@ -16,6 +22,7 @@ function *requestApi(url) {
 
 module.exports = function*(req, res, locale) {
 	var thunk = function (callback) {
+		counterpart.registerTranslations(locale, locales[locale]);
 		Router.match({routes: routes, location: req.url}, co.wrap(function*(err, redirectLocation, renderProps) {
 			if (err) {
 				return callback(err);
@@ -28,6 +35,7 @@ module.exports = function*(req, res, locale) {
 			}).filter(function (path) {
 				return path !== null;
 			});
+
 			var urls = paths.map(function (params) {
 				params.query.dp_apikey = config.api_key;
 				return requestApi(config.api_url + '?' + qs.stringify(params.query));
@@ -43,6 +51,8 @@ module.exports = function*(req, res, locale) {
 			keys.forEach(function (key, index) {
 				data[key] = response[index];
 			});
+			data.localization = {};
+			data.localization[locale] = locales[locale];
 			var customProps = {
 				data: data
 			};

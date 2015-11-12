@@ -19,6 +19,7 @@ module.exports = React.createClass({
 	},
 	getDefaultProps: function () {
 		if (process.browser) {
+			console.log('__DATA__:', __DATA__);
 			__DATA__.searchPage = __DATA__.searchPage || { result: []};
 			return {
 				data: {

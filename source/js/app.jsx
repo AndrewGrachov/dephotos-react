@@ -1,7 +1,9 @@
-var React = require('react');
-var createFragment = require('react-addons-create-fragment');
-var RouteHandler = require('react-router').RouteHandler;
-var Link = require('react-router').Link;
+const React = require('react');
+const createFragment = require('react-addons-create-fragment');
+const RouteHandler = require('react-router').RouteHandler;
+const Link = require('react-router').Link;
+const Translate = require('react-translate-component');
+const SwitchLocale = require('./shared/switchLocale.jsx');
 var styleContent = require('../../build/css/app.css');
 module.exports = React.createClass({
 	displayName: 'App',
@@ -10,15 +12,16 @@ module.exports = React.createClass({
 			<div>
 				<style type="text/css">{styleContent.toString()}</style>
 				<div className="hero-unit">
-					<h1>Depositphotos React test</h1>
+					<h1><Translate content='dep_react_test'/></h1>
 				</div>
+				<SwitchLocale />
 				<div>
 					<ul className="nav">
 						<li>
-							<Link activeClassName="active" to="/search">Search</Link>
+							<Link activeClassName="active" to="/search"><Translate content='search' /></Link>
 						</li>
 						<li>
-							<Link activeClassName="active" to='/dashboard'>Dashboard</Link>
+							<Link activeClassName="active" to='/dashboard'><Translate content='dashboard' /></Link>
 						</li>
 					</ul>
 				</div>

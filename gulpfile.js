@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var webpack = require('webpack-stream');
 var named = require('vinyl-named');
+var nodemon = require('gulp-nodemon');
 
 gulp.task('scripts', function () {
 	return gulp.src('./source/js/client.jsx')
@@ -27,4 +28,12 @@ gulp.task('scripts', function () {
 		.pipe(gulp.dest('./build/js/'));
 });
 
-gulp.task('default', ['scripts']);
+gulp.task('start', function () {
+	nodemon({
+		script: 'app.js',
+		ext: 'js html jsx',
+		env: { 'NODE_ENV': process.env.NODE_ENV || 'development' }
+  	});
+});
+
+gulp.task('default', ['scripts', 'start']);
