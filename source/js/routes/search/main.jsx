@@ -53,8 +53,10 @@ module.exports = React.createClass({
 		}.bind(this));
 	},
 	componentDidMount: function () {
-		if (!this.hasData) {
+		console.log('hashdata:', this.hasData());
+		if (!this.hasData()) {
 			var query = this.constructor.load().query;
+			console.log('query:', query);
 			this.load(query);
 		}
 	},
