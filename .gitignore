@@ -1,3 +1,4 @@
 run.sh
 build/js
 node_modules
+.idea

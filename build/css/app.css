@@ -30,9 +30,9 @@ body {
 	margin-right: 10px;
 }
 
-.nav li a.active {
-	background-color: #337ab7;
-	color: white;
+.active {
+	background-color: #337ab7 !important;
+	color: white !important;
 }
 
 label {

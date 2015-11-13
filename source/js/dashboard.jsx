@@ -6,15 +6,15 @@ module.exports = React.createClass({
 	displayName: 'Dashboard',
 	render: function () {
 		return (<div>
-			<div className="h2">Dashboard</div>
-			<ul className="sub-nav">
-				<li className="btn btn-default">
-					<Link to="/dashboard/view1">
+			<div className="h2"><Translate content='dashboard'/></div>
+			<ul className="nav">
+				<li>
+					<Link to="/dashboard/view1" activeClassName="active" className="btn btn-default">
 						<Translate content='nested_view1'/>
 					</Link>
 				</li>
-				<li className="btn btn-default btn-search">
-					<Link to="/dashboard/view2">
+				<li>
+					<Link to="/dashboard/view2" activeClassName="active" className="btn btn-default">
 						<Translate content='nested_view2'/>
 					</Link>
 				</li>
