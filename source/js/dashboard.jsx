@@ -6,14 +6,14 @@ module.exports = React.createClass({
 	displayName: 'Dashboard',
 	render: function () {
 		return (<div>
-			Dashboard
+			<div className="h2">Dashboard</div>
 			<ul className="sub-nav">
-				<li>
+				<li className="btn btn-default">
 					<Link to="/dashboard/view1">
 						<Translate content='nested_view1'/>
 					</Link>
 				</li>
-				<li>
+				<li className="btn btn-default btn-search">
 					<Link to="/dashboard/view2">
 						<Translate content='nested_view2'/>
 					</Link>
@@ -24,4 +24,4 @@ module.exports = React.createClass({
 			</div>
 		</div>)
 	}
-})
+});

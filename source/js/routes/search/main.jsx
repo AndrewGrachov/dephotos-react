@@ -73,15 +73,20 @@ module.exports = React.createClass({
 		var searchItems = this.state.items.map(function (props, index) {
 			return <SearchItem {...props} key={index} />
 		});
-		return (<div>
+		return (
+				<div className="search-container">
 			<style type="text/css">{styleContent.toString()}</style>
 			<div>
-				<input className="big-input" ref="searchInput"/>
-				<button className="search-button" onClick={this.search}>Search</button>
+				<div className="form-group">
+					<label htmlFor="searchInput" className="sr-only">Password</label>
+					<input className="form-control" ref="searchInput" id="searchInput"/>
+				</div>
+				<button className="btn btn-default btn-search" onClick={this.search}>Search</button>
 			</div>
 			<div className="search-container">
 				{searchItems}
 			</div>
-		</div>)
+		</div>
+		)
 	}
 });

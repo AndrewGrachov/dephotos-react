@@ -17,15 +17,14 @@ module.exports = React.createClass({
 	},
 	render: function() {
 		return (
-		<p>
-		<span>Switch Locale:</span>
-
-		<select defaultValue={counterpart.getLocale()} onChange={this.handleChange}>
-		<option>en</option>
-		<option>de</option>
-		<option>ru</option>
-		</select>
-		</p>
+		<div className="locale">
+			<span>Switch Locale:</span>
+			<select defaultValue={counterpart.getLocale()} onChange={this.handleChange} className="btn btn-default">
+				<option>en</option>
+				<option>de</option>
+				<option>ru</option>
+			</select>
+		</div>
 		);
 	}
 });
