@@ -11,10 +11,10 @@ module.exports = React.createClass({
 		return (
 			<div className="container">
 				<style type="text/css">{styleContent.toString()}</style>
-				<div className="hero-unit">
+				<div className="hero-unit-dp">
 					<h1><Translate content='dep_react_test'/></h1>
 				</div>
-				<div className="collapse">
+				<div>
 					<SwitchLocale />
 					<div>
 						<ul className="nav">
@@ -27,7 +27,7 @@ module.exports = React.createClass({
 						</ul>
 					</div>
 				</div>
-				<div className="main">
+				<div>
 					{this.props.children}
 				</div>
 			</div>

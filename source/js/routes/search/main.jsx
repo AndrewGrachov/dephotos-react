@@ -1,15 +1,18 @@
 const React = require('react');
 const SearchItem = require('./searchItem.jsx');
 const api = require('../../utils/api');
+const Pager = require('../../shared/pager.jsx');
+
 var styleContent = require('../../../../build/css/search/main.css');
 
 module.exports = React.createClass({
+	displayName: 'SearchPage',
 	statics: {
 		load: function (query) {
 			return {
 				query: {
 					dp_command: 'search',
-					dp_search_limit: 100,
+					dp_search_limit: 30,
 					dp_search_query: 'cats',
 					dp_search_nudity: 1
 				},
@@ -24,9 +27,7 @@ module.exports = React.createClass({
 			return {
 				data: {
 					searchQuery: 'cats',
-					searchPage: {
-						result: __DATA__.searchPage.result
-					}
+					searchPage: __DATA__.searchPage
 				}
 			}
 		}
@@ -36,7 +37,12 @@ module.exports = React.createClass({
 		return {
 			loading: !!this.props.data.searchPage.result.length,
 			items: this.props.data.searchPage.result,
-			searchProps: this.constructor.load().query
+			searchProps: this.constructor.load().query,
+			page: 1,
+			limit: 30,
+			skip: 0,
+			count: this.props.data.searchPage.count,
+			pagesCount: Math.floor(this.props.data.searchPage.count / 100)
 		};
 	},
 	load: function (query, callback) {
@@ -47,16 +53,16 @@ module.exports = React.createClass({
 			if (!err) {
 				this.setState({
 					loading: false,
-					items: response.result
+					items: response.result,
+					count: response.count,
+					pagesCount: Math.floor(response.count / this.state.limit)
 				});
 			}
 		}.bind(this));
 	},
 	componentDidMount: function () {
-		console.log('hashdata:', this.hasData());
 		if (!this.hasData()) {
 			var query = this.constructor.load().query;
-			console.log('query:', query);
 			this.load(query);
 		}
 	},
@@ -67,6 +73,14 @@ module.exports = React.createClass({
 		var searchValue = this.refs.searchInput.value.replace(new RegExp(' ', 'g'), '+');
 		var query = JSON.parse(JSON.stringify(this.state.searchProps));
 		query.dp_search_query = searchValue;
+		this.setState({
+			searchProps: query
+		});
+		this.load(query);
+	},
+	setPage: function (pageNumber) {
+		var query = this.state.searchProps;
+		query.dp_search_offset = pageNumber * this.state.limit;
 		this.load(query);
 	},
 	render: function () {
@@ -74,19 +88,20 @@ module.exports = React.createClass({
 			return <SearchItem {...props} key={index} />
 		});
 		return (
-				<div className="search-container">
-			<style type="text/css">{styleContent.toString()}</style>
-			<div>
-				<div className="form-group">
-					<label htmlFor="searchInput" className="sr-only">Password</label>
-					<input className="form-control" ref="searchInput" id="searchInput"/>
-				</div>
-				<button className="btn btn-default btn-search" onClick={this.search}>Search</button>
-			</div>
 			<div className="search-container">
-				{searchItems}
+				<style type="text/css">{styleContent.toString()}</style>
+				<div>
+					<div className="form-group">
+						<label htmlFor="searchInput" className="sr-only">Password</label>
+						<input ref="searchInput" id="searchInput"/>
+					</div>
+					<button className="btn btn-default btn-search" onClick={this.search}>Search</button>
+				</div>
+				<div className="search-container clearfix">
+					{searchItems}
+				</div>
+				<Pager count={this.state.pagesCount} onChange={this.setPage}/>
 			</div>
-		</div>
 		)
 	}
 });

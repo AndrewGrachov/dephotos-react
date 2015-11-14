@@ -2,15 +2,14 @@
 	width: 1170px;
 	margin: 0 auto;
 }
-.hero-unit {
+.hero-unit-dp {
     background-color: #46D6F2;
-    height: 40px;
     padding: 20px;
     color: white;
     width: 100%;
     text-align: center;
 }
-.hero-unit h1 {
+.hero-unit-dp h1 {
 	margin: 0;
 }
 body {
@@ -126,6 +125,10 @@ label {
 	content: "";
 	display: table;
 	clear: both;
+}
+
+.float-none {
+	float: none;
 }
 
 .main {
