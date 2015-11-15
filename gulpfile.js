@@ -3,6 +3,9 @@ const webpack = require('webpack-stream');
 const named = require('vinyl-named');
 const nodemon = require('gulp-nodemon');
 const eslint = require('gulp-eslint');
+const mocha = require('gulp-mocha');
+require('node-jsx').install({extension: '.jsx', harmony: true});
+
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 gulp.task('scripts', function () {
@@ -38,6 +41,11 @@ gulp.task('lint', function () {
 		.pipe(eslint())
 		.pipe(eslint.format())
 		.pipe(eslint.failAfterError());
+});
+
+gulp.task('test', function () {
+	return gulp.src('test/*.spec.js')
+			.pipe(mocha());
 });
 
 gulp.task('start', function () {

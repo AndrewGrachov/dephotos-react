@@ -12,8 +12,8 @@ module.exports = React.createClass({
 	getInitialState: function () {
 		return {
 			count: this.props.count,
-			activePage: 1,
-			startPage: 1
+			activePage: this.props.activePage || 1,
+			startPage: this.props.startPage || 1
 		};
 	},
 	componentWillReceiveProps: function (props) {
@@ -41,7 +41,7 @@ module.exports = React.createClass({
 		this.onPageButtonClick(newStartPage, e);
 	},
 	previous: function (e) {
-		var newStartPage = this.state.startPage - this.props.defaultLimit + 1;
+		var newStartPage = this.state.startPage - this.props.defaultLimit;
 		if (newStartPage < 0) {
 			newStartPage = 1;
 		}
@@ -59,15 +59,19 @@ module.exports = React.createClass({
 			this.onPageButtonClick(value, e);
 		}
 	},
+	changePageInput: function (e) {
+		this.setState({activePage: e.target.value})
+	},
+	getEndPage: function () {
+		var offset = this.state.startPage + this.props.defaultLimit + 1;
+		if (offset < this.state.count) {
+			return this.state.startPage + this.props.defaultLimit - 1;
+		}
+		return endPage = this.state.count - this.state.activePage;
+	},
 	render: function () {
 		var buttons = [];
-		var endPage;
-		var offset = this.state.startPage + this.props.defaultLimit;
-		if (offset < this.state.count) {
-			endPage = this.state.startPage + this.props.defaultLimit;
-		} else {
-			endPage = this.state.count - this.state.activePage;
-		}
+		var endPage = this.getEndPage();
 
 		for (var i = this.state.startPage; i < endPage; i++) {
 			var className = this.state.activePage == i ? 'active' : ''
@@ -79,18 +83,18 @@ module.exports = React.createClass({
 		return (
 			<nav>
 				<div className="col-xs-2 float-none">
-					<input className="input-small" value={this.state.activePage} type="number" ref="jumpTo" onKeyPress={this.jumpTo} onChange={noop} />
+					<input className="input-small" value={this.state.activePage} type="number" ref="jumpTo" onKeyPress={this.jumpTo} onChange={this.changePageInput} />
 				</div>
 				<div>
 					<ul className="pagination">
 						<li>
-							<a href="#" aria-label="Previous" onClick={this.previous}>
+							<a href="#" aria-label="Previous" className="prev-button" onClick={this.previous}>
 								<span aria-hidden="true">&laquo;</span>
 							</a>
 						</li>
 						{buttons}
 						<li>
-							<a href="#" aria-label="Next" onClick={this.next}>
+							<a href="#" className="next-button" aria-label="Next" onClick={this.next}>
 								<span aria-hidden="true">&raquo;</span>
 							</a>
 						</li>
