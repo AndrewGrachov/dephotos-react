@@ -31,7 +31,7 @@ module.exports = React.createClass({
 		this.props.onChange(pageNumber);
 	},
 	next: function (e) {
-		var newStartPage = this.state.startPage + this.props.defaultLimit;
+		var newStartPage = this.state.startPage + this.props.defaultLimit - 1;
 		if (newStartPage > this.state.count) {
 			newStartPage = this.state.count - this.state.startPage;
 		}
@@ -41,8 +41,8 @@ module.exports = React.createClass({
 		this.onPageButtonClick(newStartPage, e);
 	},
 	previous: function (e) {
-		var newStartPage = this.state.startPage - this.props.defaultLimit;
-		if (newStartPage < 0) {
+		var newStartPage = this.state.startPage - this.props.defaultLimit + 1;
+		if (newStartPage <= 0) {
 			newStartPage = 1;
 		}
 		this.setState({

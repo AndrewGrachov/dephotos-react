@@ -45,8 +45,8 @@ describe('when testing pager', function () {
 	it('should load next 10 pages', function () {
 		var nextButton = TestUtils.findRenderedDOMComponentWithClass(pager, 'next-button');
 		TestUtils.Simulate.click(nextButton);
-		expect(pager.state.activePage).to.equal(11);
-		expect(pager.state.startPage).to.equal(11);
+		expect(pager.state.activePage).to.equal(10);
+		expect(pager.state.startPage).to.equal(10);
 	});
 
 	it('should load previous 10 pages', function () {
